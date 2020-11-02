@@ -1,77 +1,40 @@
-import React from "react";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import Checkbox from "@material-ui/core/Checkbox";
+import React, { useState, useEffect } from "react";
+import TodoForm from "../components/TodoForm";
+import TodoList from "../components/TodoList";
+import './styles.css'
+import * as auth from '../utils/auth';
+import axios from 'axios';
 
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  body: {
-    fontSize: 14,
-  },
-}))(TableCell);
+export default function ToDo() {
+  const [todos, setTodos] = useState([]);
+  const [inputText, setInputText] = useState("");
 
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
+useEffect(() => {
+  const res = axios
+  .get("http://localhost:4000/me/todos", {
+    headers: {
+      authorization: auth.getUserToken(),
     },
-  },
-}))(TableRow);
+  })
+  .then((res) => {
+    console.log("after me");
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("learn react"),
-  createData("learn react"),
-  createData("learn react"),
-  createData("learn react"),
-  createData("learn react"),
-];
-
-const useStyles = makeStyles({
-  table: {
-    minWidth: 700,
-  },
-
-});
-
-export default function CustomizedTables() {
-  const classes = useStyles();
+    const todos = res?.data;
+    setTodos(todos)
+    console.log("todos", todos);
+  })
+}, [])
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="customized table">
-        <TableHead>
-          <TableRow >
-            <StyledTableCell>Todos</StyledTableCell>
-           
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <TableCell padding="checkbox">
-                <Checkbox />
-              </TableCell>
-              <StyledTableCell component="th" scope="row">
-                {row.name}
-              </StyledTableCell>
-             
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div>
+      <h1>ToDo</h1>
+      <TodoForm
+        todos={todos}
+        setTodos={setTodos}
+        inputText={inputText}
+        setInputText={setInputText}
+      />
+      <TodoList todos={todos} setTodos={setTodos} /> 
+    </div>
   );
 }

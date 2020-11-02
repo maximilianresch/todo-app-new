@@ -9,13 +9,14 @@ import {
 import ToDo from './pages/ToDo';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
+import './pages/styles.css'
 
 function App() {
   return (
     <Router>
-      <div>
+      <div className="app">
         <nav>
-          <ul>
+          <ul className="router">
             <li>
               <Link to="/todos">ToDo</Link>
             </li>
