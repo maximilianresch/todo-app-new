@@ -22,7 +22,7 @@ export default function Login() {
       password
     }
 
-    const response = await axios.post("http:localhost:4000/login", data)
+    const response = await axios.post("http://localhost:4000/login", data)
 
     if (response.data.success) {
       auth.saveUserToken(response.data.token)

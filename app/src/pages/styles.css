@@ -58,7 +58,7 @@ form button:hover {
 .complete-btn {
   background: #9b0a0aec;
   color: white;
-  border: dashed;
+  border: thin;
   padding: 1rem;
   cursor: pointer;
   font-size: 1rem;
